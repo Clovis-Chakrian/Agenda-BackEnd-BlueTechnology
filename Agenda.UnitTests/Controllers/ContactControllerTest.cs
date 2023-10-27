@@ -260,7 +260,7 @@ namespace Agenda.UnitTests.Controllers
             var controller = new ContactController(mockContactService.Object);
 
             // Act
-            var result = (OkResult)await controller.Update(1, contact);
+            var result = (OkObjectResult)await controller.Update(1, contact);
 
             // Assert
             result.StatusCode.Should().Be(200);
@@ -287,6 +287,54 @@ namespace Agenda.UnitTests.Controllers
 
             // Assert
             mockContactService.Verify(service => service.UpdateContact(1, contact), Times.Once());
+        }
+
+        [Fact]
+        public async Task Put_OnSuccess_ReturnsContactUpdated()
+        {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.UpdateContact(1, contact)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Update(1, contact);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var objResult = (OkObjectResult)result;
+            objResult.Value.Should().Be(contact);
+        }
+
+        [Fact]
+        public async Task Put_OnFail_ReturnsBadRequest()
+        {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.UpdateContact(1, contact)).ReturnsAsync(false);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = (BadRequestResult)await controller.Update(1, contact);
+
+            // Assert
+            result.StatusCode.Should().Be(400);
         }
     }
 }

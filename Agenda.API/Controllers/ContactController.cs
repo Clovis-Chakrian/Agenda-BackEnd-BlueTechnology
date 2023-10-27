@@ -44,7 +44,10 @@ namespace Agenda.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Contact contact)
         {
-            return Ok();
+            var success = await _contactService.UpdateContact(id, contact);
+            if (success)
+                return Ok(contact);
+            return BadRequest();
         }
     }
 }

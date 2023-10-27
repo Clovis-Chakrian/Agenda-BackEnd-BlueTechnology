@@ -246,7 +246,47 @@ namespace Agenda.UnitTests.Controllers
         [Fact]
         public async Task Put_OnSuccess_ReturnStatusCode200()
         {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.UpdateContact(1, contact)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
 
+            // Act
+            var result = (OkResult)await controller.Update(1, contact);
+
+            // Assert
+            result.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task Put_OnSuccess_InvolkesContactServiceExactlyOnce()
+        {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.UpdateContact(1, contact)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Update(1, contact);
+
+            // Assert
+            mockContactService.Verify(service => service.UpdateContact(1, contact), Times.Once());
         }
     }
 }

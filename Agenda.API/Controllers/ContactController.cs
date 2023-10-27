@@ -40,5 +40,11 @@ namespace Agenda.API.Controllers
                 return Created("", contact);
             return BadRequest();
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, Contact contact)
+        {
+            return Ok();
+        }
     }
 }

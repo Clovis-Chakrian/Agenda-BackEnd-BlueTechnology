@@ -113,7 +113,22 @@ namespace Agenda.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetById_OnNoUserFound_ReturnsStatusCode404() 
+        public async Task GetById_OnSuccess_InvolkesContactServiceExactlyOnce()
+        {
+             // Arrange
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.GetContactById(1)).ReturnsAsync(new Contact());
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.GetById(1);
+
+            // Assert
+            mockContactService.Verify(service => service.GetContactById(1), Times.Once());
+        }
+
+        [Fact]
+        public async Task GetById_OnNoUserFound_ReturnsStatusCode404()
         {
             // Arrange
             var mockContactService = new Mock<IContactService>();

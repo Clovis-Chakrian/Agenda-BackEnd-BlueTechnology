@@ -22,5 +22,10 @@ namespace Agenda.API.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<Contact> UpdateContact(int id, Contact contact)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

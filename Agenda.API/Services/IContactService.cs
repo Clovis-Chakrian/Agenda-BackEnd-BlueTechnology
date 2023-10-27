@@ -11,5 +11,6 @@ namespace Agenda.API.Services
         public Task<List<Contact>> GetAllContacts();
         public Task<Contact> GetContactById(int id);
         public Task<Boolean> CreateContact(Contact contact);
+        public Task<Contact> UpdateContact(int id, Contact contact);
     }
 }

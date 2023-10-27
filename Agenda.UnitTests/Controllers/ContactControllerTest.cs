@@ -115,7 +115,7 @@ namespace Agenda.UnitTests.Controllers
         [Fact]
         public async Task GetById_OnSuccess_InvolkesContactServiceExactlyOnce()
         {
-             // Arrange
+            // Arrange
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.GetContactById(1)).ReturnsAsync(new Contact());
             var controller = new ContactController(mockContactService.Object);
@@ -148,18 +148,105 @@ namespace Agenda.UnitTests.Controllers
         [Fact]
         public async Task Post_OnSuccess_ReturnsStatusCode201()
         {
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
             // Arrange
             var mockContactService = new Mock<IContactService>();
-            mockContactService.Setup(service => service.CreateContact(new Contact())).ReturnsAsync(true);
+            mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
 
             // Act
-            var result = await controller.Post(new Contact());
+            var result = await controller.Post(contact);
 
             // Assert
             result.Should().BeOfType<CreatedResult>();
             var objResult = (CreatedResult)result;
             objResult.StatusCode.Should().Be(201);
+        }
+
+        [Fact]
+        public async Task Post_OnSuccess_InvolkesContactServiceExactlyOnce()
+        {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Post(contact);
+
+            // Assert
+            mockContactService.Verify(service => service.CreateContact(contact), Times.Once());
+        }
+
+        [Fact]
+        public async Task Post_OnSuccess_ReturnsReceivedData()
+        {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Post(contact);
+
+            // Assert
+            result.Should().BeOfType<CreatedResult>();
+            var objResult = (CreatedResult)result;
+            objResult.Value.Should().Be(contact);
+        }
+
+        [Fact]
+        public async Task Post_OnFail_ReturnsBadRequest()
+        {
+            // Arrange
+            var contact = new Contact()
+            {
+                Id = 1,
+                Name = "Clóvis",
+                LastName = "Chakrian",
+                Email = "clovischakrian@gmail.com",
+                Phone = "81985444683"
+            };
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(false);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Post(contact);
+
+            // Assert
+            result.Should().BeOfType<BadRequestResult>();
+            var objResult = (BadRequestResult)result;
+            objResult.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public async Task Put_OnSuccess_ReturnStatusCode200()
+        {
+
         }
     }
 }

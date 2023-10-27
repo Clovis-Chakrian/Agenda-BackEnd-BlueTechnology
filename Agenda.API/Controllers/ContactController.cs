@@ -35,7 +35,10 @@ namespace Agenda.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Contact contact)
         {
-            return Created("", new Contact(){});
+            var success = await _contactService.CreateContact(contact);
+            if (success)
+                return Created("", contact);
+            return BadRequest();
         }
     }
 }

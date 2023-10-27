@@ -49,5 +49,11 @@ namespace Agenda.API.Controllers
                 return Ok(contact);
             return BadRequest();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete()
+        {
+            
+        }
     }
 }

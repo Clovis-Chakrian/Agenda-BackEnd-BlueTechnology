@@ -13,6 +13,11 @@ namespace Agenda.API.Services
             throw new NotImplementedException();
         }
 
+        public Task<bool> DeleteContact(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Contact>> GetAllContacts()
         {
             throw new NotImplementedException();

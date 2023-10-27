@@ -51,9 +51,10 @@ namespace Agenda.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete()
+        public async Task<IActionResult> Delete(int id)
         {
-            
+            var success = _contactService.DeleteContact(id);
+            return Ok("Opa");
         }
     }
 }

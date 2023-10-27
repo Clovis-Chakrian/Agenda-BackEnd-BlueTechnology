@@ -336,5 +336,39 @@ namespace Agenda.UnitTests.Controllers
             // Assert
             result.StatusCode.Should().Be(400);
         }
+
+        [Fact]
+        public async Task Delete_OnSuccess_ReturnsStatusCode200()
+        {
+            // Arrange
+            int id = 1;
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.DeleteContact(id)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Delete(id);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var objResult = (OkObjectResult)result;
+            objResult.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task Delete_OnSuccess_InvolkesContactServiceExactlyOnce()
+        {
+            // Arrange
+            int id = 1;
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.DeleteContact(id)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Delete(id);
+
+            // Assert
+            mockContactService.Verify(service => service.DeleteContact(id), Times.Once());
+        }
     }
 }

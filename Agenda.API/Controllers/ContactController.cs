@@ -30,5 +30,11 @@ namespace Agenda.API.Controllers
                 return Ok(contact);
             return NotFound("Não foi encontrado nenhum contato para o Id recebido.");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Post()
+        {
+            return Ok();
+        }
     }
 }

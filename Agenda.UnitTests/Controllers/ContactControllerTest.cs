@@ -128,5 +128,11 @@ namespace Agenda.UnitTests.Controllers
             objectResult.StatusCode.Should().Be(404);
             objectResult.Value.Should().Be("Não foi encontrado nenhum contato para o Id recebido.");
         }
+
+        [Fact]
+        public async Task Post_OnSuccess_ReturnsStatusCode201()
+        {
+            
+        }
     }
 }

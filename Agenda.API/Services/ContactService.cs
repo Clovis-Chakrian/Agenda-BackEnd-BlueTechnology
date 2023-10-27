@@ -8,6 +8,11 @@ namespace Agenda.API.Services
 {
     public class ContactService : IContactService
     {
+        public Task<bool> CreateUser(Contact contact)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Contact>> GetAllContacts()
         {
             throw new NotImplementedException();

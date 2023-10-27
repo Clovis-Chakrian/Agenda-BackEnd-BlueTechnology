@@ -7,6 +7,7 @@ using Agenda.API.Controllers;
 using Agenda.API.Models;
 using Agenda.API.Services;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -132,7 +133,18 @@ namespace Agenda.UnitTests.Controllers
         [Fact]
         public async Task Post_OnSuccess_ReturnsStatusCode201()
         {
-            
+            // Arrange
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.CreateContact(new Contact())).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Post(new Contact());
+
+            // Assert
+            result.Should().BeOfType<CreatedResult>();
+            var objResult = (CreatedResult)result;
+            objResult.StatusCode.Should().Be(201);
         }
     }
 }

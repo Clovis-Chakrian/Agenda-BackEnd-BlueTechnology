@@ -1,3 +1,4 @@
+using Agenda.API.Models;
 using Agenda.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,9 +33,9 @@ namespace Agenda.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post(Contact contact)
         {
-            return Ok();
+            return Created("", new Contact(){});
         }
     }
 }

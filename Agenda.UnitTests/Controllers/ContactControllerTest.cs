@@ -290,7 +290,7 @@ namespace Agenda.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task Put_OnSuccess_ReturnsContactUpdated()
+        public async Task Put_OnSuccess_ReturnsDescritiveMessageWithTheContactIdReceived()
         {
             // Arrange
             var contact = new Contact()
@@ -311,7 +311,7 @@ namespace Agenda.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             var objResult = (OkObjectResult)result;
-            objResult.Value.Should().Be(contact);
+            objResult.Value.Should().Be($"Usuário de id {contact.Id} atualizado com sucesso!");
         }
 
         [Fact]

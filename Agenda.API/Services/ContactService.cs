@@ -8,12 +8,12 @@ namespace Agenda.API.Services
 {
     public class ContactService : IContactService
     {
-        public Task<bool> CreateContact(Contact contact)
+        public Task<Boolean> CreateContact(Contact contact)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteContact(int id)
+        public Task<Boolean> DeleteContact(int id)
         {
             throw new NotImplementedException();
         }

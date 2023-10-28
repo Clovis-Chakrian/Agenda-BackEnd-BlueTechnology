@@ -370,5 +370,56 @@ namespace Agenda.UnitTests.Controllers
             // Assert
             mockContactService.Verify(service => service.DeleteContact(id), Times.Once());
         }
+
+        [Fact]
+        public async Task Delete_OnSuccess_ReturnsDescritiveMessageWithTheContactIdDeleted()
+        {
+            // Arrange
+            int id = 1;
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.DeleteContact(id)).ReturnsAsync(true);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = (OkObjectResult)await controller.Delete(id);
+
+            // Assert
+            result.Value.Should().Be($"Usuário de id {id} foi deletado com sucesso.");
+        }
+
+        [Fact]
+        public async Task Delete_OnFail_ReturnsBadRequest()
+        {
+            // Arrange
+            int id = 1;
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.DeleteContact(id)).ReturnsAsync(false);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.Delete(id);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+            var objResult = (BadRequestObjectResult)result;
+            objResult.StatusCode.Should().Be(400);
+        }
+
+        [Fact]
+        public async Task Delete_OnFail_ReturnsReceivedIdToDeleteOnBodyMessage()
+        {
+            // Arrange
+            int id = 1;
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.DeleteContact(id)).ReturnsAsync(false);
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = (BadRequestObjectResult)await controller.Delete(id);
+
+            // Assert
+            result.Value.Should().Be($"Não foi possível deletar o contato de id {id}. Tente novamente mais tarde!");
+
+        }
     }
 }

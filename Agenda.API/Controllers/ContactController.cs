@@ -46,7 +46,7 @@ namespace Agenda.API.Controllers
         {
             var success = await _contactService.UpdateContact(id, contact);
             if (success)
-                return Ok(contact);
+                return Ok($"Usuário de id {id} atualizado com sucesso!");
             return BadRequest();
         }
 

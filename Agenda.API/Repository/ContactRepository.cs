@@ -35,7 +35,7 @@ namespace Agenda.API.Repository
             return await _contactContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<Contact> SerachContact(int id)
+        public async Task<Contact> SearchContact(int id)
         {
             return await _contactContext.Contacts.Where(attribute => attribute.Id == id).FirstOrDefaultAsync();
         }

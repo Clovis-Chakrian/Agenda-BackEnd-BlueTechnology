@@ -9,7 +9,7 @@ namespace Agenda.API.Repository
     public interface IContactRepository
     {
         Task<IEnumerable<Contact>> GetContacts();
-        Task<Contact> SerachContact(int id);
+        Task<Contact> SearchContact(int id);
         void CreateContact(Contact contact);
         void UpdateContact(Contact contact);
         void DeleteContact(Contact contact);

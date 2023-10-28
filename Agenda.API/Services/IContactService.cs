@@ -8,7 +8,7 @@ namespace Agenda.API.Services
 {
     public interface IContactService
     {
-        public Task<List<Contact>> GetAllContacts();
+        public Task<IEnumerable<Contact>> GetAllContacts();
         public Task<Contact> GetContactById(int id);
         public Task<Boolean> CreateContact(Contact contact);
         public Task<Boolean> UpdateContact(int id, Contact contact);

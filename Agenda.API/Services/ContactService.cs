@@ -3,34 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Agenda.API.Models;
+using Agenda.API.Repository;
 
 namespace Agenda.API.Services
 {
     public class ContactService : IContactService
     {
-        public Task<Boolean> CreateContact(Contact contact)
+        private readonly IContactRepository _contactRepository;
+        public ContactService(IContactRepository contactRepository)
         {
-            throw new NotImplementedException();
+            _contactRepository = contactRepository;
+        }
+        public async Task<Boolean> CreateContact(Contact contact)
+        {
+            _contactRepository.CreateContact(contact);
+            return await _contactRepository.SaveChangesAsync();
         }
 
-        public Task<Boolean> DeleteContact(int id)
+        public async Task<Boolean> DeleteContact(int id)
         {
-            throw new NotImplementedException();
+            var contact = await _contactRepository.SearchContact(id);
+            if (contact == null)
+                return false;
+            _contactRepository.DeleteContact(contact);
+            return await _contactRepository.SaveChangesAsync();
         }
 
-        public async Task<List<Contact>> GetAllContacts()
+        public async Task<IEnumerable<Contact>> GetAllContacts()
         {
-            throw new NotImplementedException();
+            var contacts = await _contactRepository.GetContacts();
+            return contacts;
         }
 
         public Task<Contact> GetContactById(int id)
         {
-            throw new NotImplementedException();
+            var contact = _contactRepository.SearchContact(id);
+            return contact;
         }
 
-        public Task<Boolean> UpdateContact(int id, Contact contact)
+        public async Task<Boolean> UpdateContact(int id, Contact contact)
         {
-            throw new NotImplementedException();
+            var bdContact = await _contactRepository.SearchContact(id);
+            if (bdContact == null)
+                return false;
+                
+            bdContact.Name = contact.Name ?? bdContact.Name;
+            bdContact.LastName = contact.LastName ?? bdContact.LastName;
+            bdContact.Phone = contact.Phone ?? bdContact.Phone;
+            bdContact.Email = contact.Email ?? bdContact.Email;
+
+            _contactRepository.UpdateContact(bdContact);
+
+            return await _contactRepository.SaveChangesAsync();
         }
     }
 }

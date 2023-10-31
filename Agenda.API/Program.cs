@@ -16,6 +16,8 @@ builder.Services.AddDbContext<ContactContext>(options => {
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<IContactService, ContactService>();
 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,14 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.Run();
-
-void ConfigureServices(IServiceCollection services)
-{
-    services.AddTransient<IContactService, ContactService>();
-}

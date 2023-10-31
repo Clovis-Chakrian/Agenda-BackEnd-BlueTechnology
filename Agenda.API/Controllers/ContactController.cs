@@ -36,7 +36,7 @@ namespace Agenda.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Contact contact)
+        public async Task<IActionResult> Post(ContactDto contact)
         {
             var success = await _contactService.CreateContact(contact);
             if (success)
@@ -45,7 +45,7 @@ namespace Agenda.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Contact contact)
+        public async Task<IActionResult> Update(int id, ContactDto contact)
         {
             var success = await _contactService.UpdateContact(id, contact);
             if (success)

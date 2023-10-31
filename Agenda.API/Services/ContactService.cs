@@ -19,12 +19,13 @@ namespace Agenda.API.Services
             _contactRepository = contactRepository;
             _mapper = mapper;
         }
-        public async Task<Boolean> CreateContact(Contact contact)
+        public async Task<Boolean> CreateContact(ContactDto contact)
         {
-            ContactValidation.Validate(contact);
-            contact.CreatedAt = DateTime.UtcNow;
-            contact.LastUpdatedAt = DateTime.UtcNow;
-            _contactRepository.CreateContact(contact);
+            var mappedContact = _mapper.Map<Contact>(contact);
+            ContactValidation.Validate(mappedContact);
+            mappedContact.CreatedAt = DateTime.UtcNow;
+            mappedContact.LastUpdatedAt = DateTime.UtcNow;
+            _contactRepository.CreateContact(mappedContact);
             return await _contactRepository.SaveChangesAsync();
         }
 
@@ -49,7 +50,7 @@ namespace Agenda.API.Services
             return _mapper.Map<ContactDto>(contact);
         }
 
-        public async Task<Boolean> UpdateContact(int id, Contact contact)
+        public async Task<Boolean> UpdateContact(int id, ContactDto contact)
         {
             var bdContact = await _contactRepository.SearchContact(id);
             if (bdContact == null)

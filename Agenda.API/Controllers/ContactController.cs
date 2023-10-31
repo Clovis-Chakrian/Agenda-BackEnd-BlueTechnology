@@ -1,5 +1,8 @@
+using Agenda.API.Dtos;
+using Agenda.API.Mappers;
 using Agenda.API.Models;
 using Agenda.API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Agenda.API.Controllers

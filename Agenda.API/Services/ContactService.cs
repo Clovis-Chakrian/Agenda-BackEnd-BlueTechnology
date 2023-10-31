@@ -2,18 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Agenda.API.Dtos;
 using Agenda.API.Libs;
 using Agenda.API.Models;
 using Agenda.API.Repository;
+using AutoMapper;
 
 namespace Agenda.API.Services
 {
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
-        public ContactService(IContactRepository contactRepository)
+        private readonly IMapper _mapper;
+        public ContactService(IContactRepository contactRepository, IMapper mapper)
         {
             _contactRepository = contactRepository;
+            _mapper = mapper;
         }
         public async Task<Boolean> CreateContact(Contact contact)
         {
@@ -33,16 +37,16 @@ namespace Agenda.API.Services
             return await _contactRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Contact>> GetAllContacts()
+        public async Task<IEnumerable<ContactDto>> GetAllContacts()
         {
             var contacts = await _contactRepository.GetContacts();
-            return contacts;
+            return contacts.Select(contact => _mapper.Map<ContactDto>(contact));
         }
 
-        public Task<Contact> GetContactById(int id)
+        public async Task<ContactDto> GetContactById(int id)
         {
-            var contact = _contactRepository.SearchContact(id);
-            return contact;
+            var contact = await _contactRepository.SearchContact(id);
+            return _mapper.Map<ContactDto>(contact);
         }
 
         public async Task<Boolean> UpdateContact(int id, Contact contact)

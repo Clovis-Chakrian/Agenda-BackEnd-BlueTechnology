@@ -8,7 +8,7 @@ namespace Agenda.API.Libs
 {
     public class ContactValidation
     {
-        public static void Validation(Contact contact) 
+        public static void Validate(Contact contact) 
         {
             if (contact == null) throw new ArgumentException("");
             if (contact.Name == null || contact.Name == "") throw new ArgumentException("O campo nome é obrigatório e não pode ser uma string vazia.");

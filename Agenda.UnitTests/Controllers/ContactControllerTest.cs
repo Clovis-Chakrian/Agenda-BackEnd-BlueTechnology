@@ -97,7 +97,7 @@ namespace Agenda.UnitTests.Controllers
             result.Should().BeOfType<OkObjectResult>();
             var objectResult = (OkObjectResult)result;
             objectResult.StatusCode.Should().Be(200);
-            objectResult.Value.Should().BeOfType<Contact>();
+            objectResult.Value.Should().BeOfType<ContactDto>();
         }
 
         [Fact]

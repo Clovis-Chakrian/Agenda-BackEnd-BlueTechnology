@@ -25,6 +25,9 @@ namespace Agenda.API.Data
             contact.Property(attribute => attribute.LastName).HasColumnName("last_name");
             contact.Property(attribute => attribute.Phone).HasColumnName("phone").IsRequired();
             contact.Property(attribute => attribute.Email).HasColumnName("email");
+            contact.Property(attribute => attribute.CreatedAt).HasColumnName("created_at").IsRequired();
+            contact.Property(attribute => attribute.LastUpdatedAt).HasColumnName("updated_at").IsRequired();
+
             base.OnModelCreating(modelBuilder);
         }
     }

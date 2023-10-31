@@ -355,5 +355,74 @@ namespace Agenda.UnitTests.Controllers
             result.Value.Should().Be($"Não foi possível deletar o contato de id {id}. Tente novamente mais tarde!");
 
         }
+
+        [Fact]
+        public async Task SearchByName_OnSuccess_ReturnsStatusCode200()
+        {
+            // Arrange
+            var contact = ContactFixture.GetTestContact();
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.SearchContactByName(contact.Name, contact.LastName)).ReturnsAsync(ContactFixture.GetListOfTestContacts());
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.SearchByName(contact.Name, contact.LastName);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var objResult = (OkObjectResult)result;
+            objResult.StatusCode.Should().Be(200);
+        }
+
+        [Fact]
+        public async Task SearchByName_OnSuccess_ReturnsListOfMatchContacts()
+        {
+            // Arrange
+            var contact = ContactFixture.GetTestContact();
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.SearchContactByName(contact.Name, contact.LastName)).ReturnsAsync(ContactFixture.GetListOfTestContacts());
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = (OkObjectResult)await controller.SearchByName(contact.Name, contact.LastName);
+
+            // Assert
+            result.Value.Should().BeOfType<List<ContactDto>>();
+        }
+
+        [Fact]
+        public async Task SearchByName_OnSuccessAndNoMatch_ReturnsDescritiveMessage()
+        {
+            // Arrange
+            var contact = ContactFixture.GetTestContact();
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.SearchContactByName(contact.Name, contact.LastName)).ReturnsAsync(new List<ContactDto>());
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = (OkObjectResult)await controller.SearchByName(contact.Name, contact.LastName);
+
+            // Assert
+            result.Value.Should().Be("Não há nenhum registro para os nomes recebidos.");
+        }
+
+        [Fact]
+        public async Task SearchByName_OnNoParameters_ReturnsBadRequestAndDescritiveMessage()
+        {
+            // Arrange
+            var contact = ContactFixture.GetTestContact();
+            var mockContactService = new Mock<IContactService>();
+            mockContactService.Setup(service => service.SearchContactByName(contact.Name, contact.LastName)).ReturnsAsync(new List<ContactDto>());
+            var controller = new ContactController(mockContactService.Object);
+
+            // Act
+            var result = await controller.SearchByName("", "");
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+            var objResult = (BadRequestObjectResult)result;
+            objResult.StatusCode.Should().Be(400);
+            objResult.Value.Should().Be("Para realizar uma pesquisa é necessário receber todos os parâmetros.");
+        }
     }
 }

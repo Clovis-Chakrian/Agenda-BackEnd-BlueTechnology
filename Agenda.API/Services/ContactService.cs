@@ -22,8 +22,8 @@ namespace Agenda.API.Services
         public async Task<Boolean> CreateContact(Contact contact)
         {
             ContactValidation.Validate(contact);
-            contact.CreatedAt = DateTime.Now;
-            contact.LastUpdatedAt = DateTime.Now;
+            contact.CreatedAt = DateTime.UtcNow;
+            contact.LastUpdatedAt = DateTime.UtcNow;
             _contactRepository.CreateContact(contact);
             return await _contactRepository.SaveChangesAsync();
         }

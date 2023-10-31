@@ -51,6 +51,14 @@ namespace Agenda.API.Services
             return _mapper.Map<ContactDto>(contact);
         }
 
+        public async Task<IEnumerable<ContactDto>> SearchContactByName(string name, string lastName)
+        {
+            var contacts = await _contactRepository.SearchByName(name, lastName);
+            var ordenedContacts = contacts.OrderBy(x => x.Name).ThenBy(x => x.LastName);
+            return ordenedContacts.Select(contact => _mapper.Map<ContactDto>(contact));
+
+        }
+
         public async Task<Boolean> UpdateContact(int id, ContactDto contact)
         {
             var bdContact = await _contactRepository.SearchContact(id);
@@ -61,7 +69,7 @@ namespace Agenda.API.Services
             bdContact.LastName = contact.LastName ?? bdContact.LastName;
             bdContact.Phone = contact.Phone ?? bdContact.Phone;
             bdContact.Email = contact.Email ?? bdContact.Email;
-            bdContact.LastUpdatedAt = DateTime.Now;
+            bdContact.LastUpdatedAt = DateTime.UtcNow;
 
             _contactRepository.UpdateContact(bdContact);
 

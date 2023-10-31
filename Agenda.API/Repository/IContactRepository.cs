@@ -10,6 +10,8 @@ namespace Agenda.API.Repository
     {
         Task<IEnumerable<Contact>> GetContacts();
         Task<Contact> SearchContact(int id);
+        Task<IEnumerable<Contact>> SearchByName(string name, string lastName);
+
         void CreateContact(Contact contact);
         void UpdateContact(Contact contact);
         void DeleteContact(Contact contact);

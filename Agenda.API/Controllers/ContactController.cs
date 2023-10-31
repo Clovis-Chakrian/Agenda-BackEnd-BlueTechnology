@@ -34,6 +34,18 @@ namespace Agenda.API.Controllers
                 return Ok(contact);
             return NotFound("Não foi encontrado nenhum contato para o Id recebido.");
         }
+        
+        [HttpGet("/search")]
+        public async Task<IActionResult> SearchByName([FromQuery(Name = "name")] string name, [FromQuery(Name = "lastName")] string lastName) 
+        {
+            if (name == null || name == "" || lastName == null || lastName == "")
+                return BadRequest("Para realizar uma pesquisa é necessário receber todos os parâmetros.");
+            
+            var contacts = await _contactService.SearchContactByName(name, lastName);
+            if (contacts.Any())
+                return Ok(contacts);
+            return Ok("Não há nenhum registro para os nomes recebidos.");
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post(ContactDto contact)

@@ -35,6 +35,12 @@ namespace Agenda.API.Repository
             return await _contactContext.SaveChangesAsync() > 0;
         }
 
+        public async Task<IEnumerable<Contact>> SearchByName(string name, string lastName)
+        {
+            var contacts = await _contactContext.Contacts.Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.LastName.ToLower().Contains(lastName.ToLower())).ToListAsync();
+            return contacts;
+        }
+
         public async Task<Contact> SearchContact(int id)
         {
             return await _contactContext.Contacts.Where(attribute => attribute.Id == id).FirstOrDefaultAsync();

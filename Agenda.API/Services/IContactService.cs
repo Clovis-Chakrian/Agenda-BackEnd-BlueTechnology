@@ -9,10 +9,11 @@ namespace Agenda.API.Services
 {
     public interface IContactService
     {
-        public Task<IEnumerable<ContactDto>> GetAllContacts();
-        public Task<ContactDto> GetContactById(int id);
-        public Task<Boolean> CreateContact(ContactDto contact);
-        public Task<Boolean> UpdateContact(int id, ContactDto contact);
-        public Task<Boolean> DeleteContact(int id);
+        Task<IEnumerable<ContactDto>> GetAllContacts();
+        Task<ContactDto> GetContactById(int id);
+        Task<IEnumerable<ContactDto>> SearchContactByName(string name, string LastName);
+        Task<Boolean> CreateContact(ContactDto contact);
+        Task<Boolean> UpdateContact(int id, ContactDto contact);
+        Task<Boolean> DeleteContact(int id);
     }
 }

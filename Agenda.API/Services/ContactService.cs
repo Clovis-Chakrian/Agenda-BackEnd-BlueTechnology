@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Agenda.API.Libs;
 using Agenda.API.Models;
 using Agenda.API.Repository;
 
@@ -16,6 +17,9 @@ namespace Agenda.API.Services
         }
         public async Task<Boolean> CreateContact(Contact contact)
         {
+            ContactValidation.Validate(contact);
+            contact.CreatedAt = DateTime.Now;
+            contact.LastUpdatedAt = DateTime.Now;
             _contactRepository.CreateContact(contact);
             return await _contactRepository.SaveChangesAsync();
         }
@@ -46,11 +50,12 @@ namespace Agenda.API.Services
             var bdContact = await _contactRepository.SearchContact(id);
             if (bdContact == null)
                 return false;
-                
+
             bdContact.Name = contact.Name ?? bdContact.Name;
             bdContact.LastName = contact.LastName ?? bdContact.LastName;
             bdContact.Phone = contact.Phone ?? bdContact.Phone;
             bdContact.Email = contact.Email ?? bdContact.Email;
+            bdContact.LastUpdatedAt = DateTime.Now;
 
             _contactRepository.UpdateContact(bdContact);
 

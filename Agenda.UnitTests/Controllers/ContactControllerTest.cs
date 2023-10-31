@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Agenda.API.Controllers;
+using Agenda.API.Dtos;
 using Agenda.API.Models;
 using Agenda.API.Services;
 using Agenda.UnitTests.Fixtures;
@@ -60,7 +61,7 @@ namespace Agenda.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             var objResult = (OkObjectResult)result;
-            objResult.Value.Should().BeOfType<List<Contact>>();
+            objResult.Value.Should().BeOfType<List<ContactDto>>();
         }
 
         [Fact]

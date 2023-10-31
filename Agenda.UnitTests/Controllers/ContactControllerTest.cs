@@ -139,7 +139,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Post_OnSuccess_ReturnsStatusCode201()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
@@ -157,7 +157,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Post_OnSuccess_InvolkesContactServiceExactlyOnce()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
@@ -173,7 +173,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Post_OnSuccess_ReturnsReceivedData()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
@@ -191,7 +191,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Post_OnFail_ReturnsBadRequest()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.CreateContact(contact)).ReturnsAsync(false);
             var controller = new ContactController(mockContactService.Object);
@@ -209,7 +209,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Put_OnSuccess_ReturnStatusCode200()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.UpdateContact(contact.Id, contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
@@ -225,7 +225,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Put_OnSuccess_InvolkesContactServiceExactlyOnce()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.UpdateContact(contact.Id, contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
@@ -241,7 +241,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Put_OnSuccess_ReturnsDescritiveMessageWithTheContactIdReceived()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.UpdateContact(contact.Id, contact)).ReturnsAsync(true);
             var controller = new ContactController(mockContactService.Object);
@@ -259,7 +259,7 @@ namespace Agenda.UnitTests.Controllers
         public async Task Put_OnFail_ReturnsBadRequest()
         {
             // Arrange
-            var contact = ContactFixture.GetTestContact();
+            var contact = ContactFixture.GetTestContactDto();
             var mockContactService = new Mock<IContactService>();
             mockContactService.Setup(service => service.UpdateContact(contact.Id, contact)).ReturnsAsync(false);
             var controller = new ContactController(mockContactService.Object);

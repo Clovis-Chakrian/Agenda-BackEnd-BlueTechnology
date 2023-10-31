@@ -41,7 +41,8 @@ namespace Agenda.API.Services
         public async Task<IEnumerable<ContactDto>> GetAllContacts()
         {
             var contacts = await _contactRepository.GetContacts();
-            return contacts.Select(contact => _mapper.Map<ContactDto>(contact));
+            var ordenedContacts = contacts.OrderBy(x => x.Name).ThenBy(x => x.LastName);
+            return ordenedContacts.Select(contact => _mapper.Map<ContactDto>(contact));
         }
 
         public async Task<ContactDto> GetContactById(int id)

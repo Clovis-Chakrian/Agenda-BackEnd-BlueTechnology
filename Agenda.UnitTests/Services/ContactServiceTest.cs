@@ -9,6 +9,7 @@ using Agenda.API.Models;
 using Agenda.API.Repository;
 using Agenda.API.Services;
 using Agenda.UnitTests.Fixtures;
+using Agenda.UnitTests.Helpers;
 using AutoMapper;
 using FluentAssertions;
 using Moq;
@@ -18,20 +19,15 @@ namespace Agenda.UnitTests.Services
 {
     public class ContactServiceTest
     {
+
         [Fact]
         public async Task CreateContact_OnSucces_ReturnsTrue()
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-
-            var mapper = mockMapp.CreateMapper();
             mockContactRepository.Setup(service => service.CreateContact(ContactFixture.GetTestContact()));
             mockContactRepository.Setup(service => service.SaveChangesAsync()).ReturnsAsync(true);
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
 
             // Act
@@ -46,15 +42,9 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-
-            var mapper = mockMapp.CreateMapper();
             mockContactRepository.Setup(service => service.CreateContact(ContactFixture.GetTestContact()));
             mockContactRepository.Setup(service => service.SaveChangesAsync()).ReturnsAsync(true);
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
 
             // Act
@@ -69,15 +59,9 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-
-            var mapper = mockMapp.CreateMapper();
             mockContactRepository.Setup(service => service.CreateContact(ContactFixture.GetTestContact()));
             mockContactRepository.Setup(service => service.SaveChangesAsync()).ReturnsAsync(false);
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
 
             // Act
@@ -92,14 +76,8 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-            var mapper = mockMapp.CreateMapper();
-
             mockContactRepository.Setup(service => service.GetContacts()).ReturnsAsync(ContactFixture.GetListOfPureModelTestContacts());
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
             // Act
             var result = await contactService.GetAllContacts();
@@ -113,14 +91,8 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-            var mapper = mockMapp.CreateMapper();
-
             mockContactRepository.Setup(service => service.GetContacts()).ReturnsAsync(new List<Contact>());
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
             // Act
             var result = await contactService.GetAllContacts();
@@ -134,14 +106,8 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-            var mapper = mockMapp.CreateMapper();
-
             mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
             // Act
             var result = await contactService.GetContactById(ContactFixture.GetTestContact().Id);
@@ -155,14 +121,8 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-            var mapper = mockMapp.CreateMapper();
-
             mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync((Contact)null);
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
             // Act
             var result = await contactService.GetContactById(ContactFixture.GetTestContact().Id);
@@ -176,14 +136,8 @@ namespace Agenda.UnitTests.Services
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
-            var mockMapp = new MapperConfiguration(opt =>
-            {
-                opt.AddProfile(new ContactMapper());
-            });
-            var mapper = mockMapp.CreateMapper();
-
             mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
-            var contactService = new ContactService(mockContactRepository.Object, mapper);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
 
             // Act
             var result = await contactService.GetContactById(ContactFixture.GetTestContact().Id);

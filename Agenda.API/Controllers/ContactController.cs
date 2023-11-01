@@ -35,7 +35,7 @@ namespace Agenda.API.Controllers
             return NotFound("Não foi encontrado nenhum contato para o Id recebido.");
         }
         
-        [HttpGet("/search")]
+        [HttpGet("search")]
         public async Task<IActionResult> SearchByName([FromQuery(Name = "name")] string name, [FromQuery(Name = "lastName")] string lastName) 
         {
             if (name == null || name == "" || lastName == null || lastName == "")

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
 using Agenda.API.Dtos;
@@ -126,6 +127,69 @@ namespace Agenda.UnitTests.Services
 
             // Assert
             mockContactRepository.Verify(service => service.GetContacts(), Times.Once());
+        }
+
+        [Fact]
+        public async Task GetContactById_OnSuccess_ReturnsContactDto()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            var mockMapp = new MapperConfiguration(opt =>
+            {
+                opt.AddProfile(new ContactMapper());
+            });
+            var mapper = mockMapp.CreateMapper();
+
+            mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
+            var contactService = new ContactService(mockContactRepository.Object, mapper);
+
+            // Act
+            var result = await contactService.GetContactById(ContactFixture.GetTestContact().Id);
+
+            // Assert
+            result.Should().BeOfType<ContactDto>();
+        }
+
+        [Fact]
+        public async Task GetContactById_OnFail_ReturnsNullContactDto()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            var mockMapp = new MapperConfiguration(opt =>
+            {
+                opt.AddProfile(new ContactMapper());
+            });
+            var mapper = mockMapp.CreateMapper();
+
+            mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync((Contact)null);
+            var contactService = new ContactService(mockContactRepository.Object, mapper);
+
+            // Act
+            var result = await contactService.GetContactById(ContactFixture.GetTestContact().Id);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetContactById_OnSuccess_InvolkesContactRepositoryExactlyOnce()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            var mockMapp = new MapperConfiguration(opt =>
+            {
+                opt.AddProfile(new ContactMapper());
+            });
+            var mapper = mockMapp.CreateMapper();
+
+            mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
+            var contactService = new ContactService(mockContactRepository.Object, mapper);
+
+            // Act
+            var result = await contactService.GetContactById(ContactFixture.GetTestContact().Id);
+
+            // Assert
+            mockContactRepository.Verify(service => service.SearchContact(ContactFixture.GetTestContact().Id), Times.Once());
         }
     }
 }

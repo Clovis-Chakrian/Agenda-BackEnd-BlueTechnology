@@ -226,7 +226,7 @@ namespace Agenda.UnitTests.Services
         }
 
         [Fact]
-        public async Task Update_OnSucces_InvolkesContactRepositoryExactlyTwice()
+        public async Task Update_OnSucces_InvolkesContactRepositoryExactlyOnce()
         {
             // Arrange
             var mockContactRepository = new Mock<IContactRepository>();
@@ -239,7 +239,60 @@ namespace Agenda.UnitTests.Services
             var result = await contactService.UpdateContact(ContactFixture.GetTestContactDto().Id, ContactFixture.GetTestContactDto());
 
             // Assert
+            mockContactRepository.Verify(service => service.SearchContact(ContactFixture.GetTestContact().Id), Times.Once());
             mockContactRepository.Verify(service => service.SaveChangesAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async Task Delete_OnSucces_ReturnsTrue()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
+            mockContactRepository.Setup(service => service.DeleteContact(ContactFixture.GetTestContact()));
+            mockContactRepository.Setup(service => service.SaveChangesAsync()).ReturnsAsync(true);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
+
+            // Act
+            var result = await contactService.DeleteContact(ContactFixture.GetTestContactDto().Id);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task Delete_OnSucces_InvolkesContactRepositoryExactlyTwice()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
+            mockContactRepository.Setup(service => service.DeleteContact(ContactFixture.GetTestContact()));
+            mockContactRepository.Setup(service => service.SaveChangesAsync()).ReturnsAsync(true);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
+
+            // Act
+            var result = await contactService.DeleteContact(ContactFixture.GetTestContactDto().Id);
+
+            // Assert
+            mockContactRepository.Verify(service => service.SearchContact(ContactFixture.GetTestContact().Id), Times.Once());
+            mockContactRepository.Verify(service => service.SaveChangesAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async Task Delete_OnFail_ReturnsFalse()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            mockContactRepository.Setup(service => service.SearchContact(ContactFixture.GetTestContact().Id)).ReturnsAsync(ContactFixture.GetTestContact());
+            mockContactRepository.Setup(service => service.DeleteContact(ContactFixture.GetTestContact()));
+            mockContactRepository.Setup(service => service.SaveChangesAsync()).ReturnsAsync(false);
+            var contactService = new ContactService(mockContactRepository.Object, AutoMapperHelper.AutoMapper());
+
+            // Act
+            var result = await contactService.DeleteContact(ContactFixture.GetTestContactDto().Id);
+
+            // Assert
+            result.Should().BeFalse();
         }
     }
 }

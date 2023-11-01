@@ -106,5 +106,26 @@ namespace Agenda.UnitTests.Services
             // Assert
             result.Should().BeEquivalentTo(ContactFixture.GetListOfTestContacts());
         }
+
+        [Fact]
+        public async Task GetAllContacts_OnSuccess_InvolkesContactRepositoryExactlyOnce()
+        {
+            // Arrange
+            var mockContactRepository = new Mock<IContactRepository>();
+            var mockMapp = new MapperConfiguration(opt =>
+            {
+                opt.AddProfile(new ContactMapper());
+            });
+            var mapper = mockMapp.CreateMapper();
+
+            mockContactRepository.Setup(service => service.GetContacts()).ReturnsAsync(new List<Contact>());
+            var contactService = new ContactService(mockContactRepository.Object, mapper);
+
+            // Act
+            var result = await contactService.GetAllContacts();
+
+            // Assert
+            mockContactRepository.Verify(service => service.GetContacts(), Times.Once());
+        }
     }
 }

@@ -58,8 +58,7 @@ Pelo swagger você poderá ver os endpoints da api e saber o que é necessário 
 
 ## 🌐 [Aplicação - Front End](https://github.com/Clovis-Chakrian/Agenda-FrontEnd-BlueTechnology)
 
-<img width="900" heigth="900"  src="https://ik.imagekit.io/chakriandev/projetos/agenda_crud/gif-front.gif?updatedAt=1698889840814
-">
+<img width="900" heigth="900"  src="./gif-front.gif">
 
 ## 🛠 Tech Stack
 

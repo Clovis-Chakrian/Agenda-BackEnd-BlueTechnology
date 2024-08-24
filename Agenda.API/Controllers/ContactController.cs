@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Agenda.API.Dtos;
 using Agenda.API.Mappers;
 using Agenda.API.Models;

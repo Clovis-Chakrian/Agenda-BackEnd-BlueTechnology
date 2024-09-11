@@ -1,7 +1,3 @@
-using System;
-using Agenda.API.Data;
-using Agenda.API.Repository;
-using Agenda.API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,11 +15,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ContactContext>(options => {
-    options.UseNpgsql(connectionString);
-});
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<IContactService, ContactService>();
+// builder.Services.AddDbContext<ContactContext>(options => {
+//     options.UseNpgsql(connectionString);
+// });
+// builder.Services.AddScoped<IContactRepository, ContactRepository>();
+// builder.Services.AddScoped<IContactService, ContactService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 

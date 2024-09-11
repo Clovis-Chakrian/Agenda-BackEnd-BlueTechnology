@@ -1,16 +1,11 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Agenda.API.Dtos;
-using Agenda.API.Mappers;
-using Agenda.API.Models;
 using Agenda.API.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Agenda.API.Controllers
 {
     [ApiController]
-    [Route("/api/[Controller]")]
+    [Route("/api/[controller]")]
     public class ContactController : ControllerBase
     {
         private readonly IContactService _contactService;

@@ -23,9 +23,7 @@ namespace Agenda.API.Controllers
         public async Task<IActionResult> Get()
         {
             var contacts = await _contactService.GetAllContacts();
-            if (contacts.Any())
-                return Ok(contacts);
-            return Ok("Nenhum contato cadastrado ainda.");
+            return Ok(contacts);
         }
 
         [HttpGet("{id}")]
